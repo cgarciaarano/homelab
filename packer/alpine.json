@@ -1,0 +1,95 @@
+{
+  "variables": {  
+    "disk_size": "10240",
+    "memory": "512",
+    "cpus": "1",
+    "kb_layout": "es",
+    "root_password": "vagrant",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant"
+  },
+  "builders": [{
+    "type": "virtualbox-iso",
+    "virtualbox_version_file": ".vbox_version",
+    "headless": false,
+
+    "guest_os_type": "Linux26_64",
+    "disk_size": "{{user `disk_size`}}",
+
+    "iso_url": "https://nl.alpinelinux.org/alpine/v3.5/releases/x86_64/alpine-virt-3.5.2-x86_64.iso",
+    "iso_checksum_url": "https://nl.alpinelinux.org/alpine/v3.5/releases/x86_64/alpine-virt-3.5.2-x86_64.iso.sha256",
+    "iso_checksum_type": "sha256",
+
+    "boot_wait": "15s",
+    "boot_command": [
+      "root<enter><wait>",
+      "echo 'KEYMAPOPTS=\"us us\"<enter>",
+      "HOSTNAMEOPTS=\"-n alpine\"<enter>",
+      "INTERFACESOPTS=\"auto lo<enter>",
+      "iface lo inet loopback<enter>",
+      "<enter>",
+      "auto eth0<enter>",
+      "iface eth0 inet dhcp<enter>",
+      "  hostname alpine<enter>",
+      "\"<enter>",
+      "PROXYOPTS=\"none\"<enter>",
+      "TIMEZONEOPTS=\"-z UTC\"<enter>",
+      "APKREPOSOPTS=\"-r\"<enter>",
+      "SSHDOPTS=\"-c openssh\"<enter>",
+      "NTPOPTS=\"-c openntpd\"<enter>",
+      "DISKOPTS=\"-m sys /dev/sda\"' > answerfile<enter>",
+      "setup-alpine -f answerfile<enter><wait5>",
+      "{{user `root_password`}}<enter>",
+      "{{user `root_password`}}<enter>",
+      "y<enter><wait10><wait10><wait10>",
+      "reboot<enter>",
+      "<wait10><wait10><wait10><wait10>",
+      "root<enter><wait>",
+      "{{user `root_password`}}<enter><wait>",
+      "adduser {{user `ssh_username`}}<enter><wait>",
+      "{{user `ssh_password`}}<enter>",
+      "{{user `ssh_password`}}<enter>",
+      "apk add sudo<enter><wait5>",
+      "echo 'Defaults env_reset<enter>",
+      "{{user `ssh_username`}} ALL=(ALL) ALL<enter>",
+      "' > /etc/sudoers.d/{{user `ssh_username`}}<enter>",
+      "sed -i '/edge\\/community/s/^#//' /etc/apk/repositories<enter>",
+      "apk update && apk add virtualbox-guest-additions docker<enter>",
+      "rc-update add docker boot<enter>",
+      "adduser {{user `ssh_username`}} docker<enter>",
+      "apk add py-pip<enter>",
+      "pip install docker-compose<enter><wait10>",
+      "setup-keymap<enter><wait>",
+      "{{user `kb_layout`}}<enter>",
+      "{{user `kb_layout`}}<enter>"
+    ],
+
+    "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+
+    "ssh_username": "{{user `ssh_username`}}",
+    "ssh_password": "{{user `ssh_password`}}",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "60m",
+
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}"],
+      ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}"]
+    ],
+
+    "shutdown_command": "echo 'vagrant'|sudo -S poweroff"
+  }],
+
+  "post-processors": [{
+    "output": "build/alpine-3.5.2-x86_64.box",
+    "type": "vagrant",
+    "keep_input_artifact": false
+  }],
+
+  "provisioners": [{
+    "type": "shell",
+    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+    "scripts": [
+      "vagrant_login.sh"
+    ]
+  }]
+}
