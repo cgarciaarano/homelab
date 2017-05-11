@@ -1,0 +1,72 @@
+{
+  "variables": {  
+    "hostname": "ubuntu-docker",
+    "disk_size": "8000",
+    "memory": "768",
+    "cpus": "1",
+    "kb_layout": "es",
+    "root_password": "vagrant",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant"
+  },
+
+    "builders": [{
+        "type": "virtualbox-iso",
+        "headless": false,
+        "guest_os_type": "Ubuntu_64",
+        "virtualbox_version_file": ".vbox_version",
+        "guest_additions_path": "VBoxGuestAdditions.iso",
+
+        "iso_url": "http://releases.ubuntu.com/16.04.2/ubuntu-16.04.2-server-amd64.iso",
+        "iso_checksum": "737ae7041212c628de5751d15c3016058b0e833fdc32e7420209b76ca3d0a535",
+        "iso_checksum_type": "sha256",
+
+        "http_directory" : "http",
+        "http_port_min" : 9001,
+        "http_port_max" : 9001,
+
+        "ssh_username": "{{user `ssh_username`}}",
+        "ssh_password": "{{user `ssh_password`}}",
+        "ssh_port": 22,
+        "ssh_wait_timeout": "20m",
+
+        "shutdown_command": "echo '{{user `ssh_password`}}'|sudo -S shutdown -P now",
+
+        "disk_size": "{{user `disk_size`}}",
+        "vboxmanage": [
+            ["modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}"],
+            ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}"]
+        ],
+
+        "boot_command" : [
+            "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "/install/vmlinuz noapic ",
+            "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+            "debian-installer=en_US auto locale=en_US ",
+            "hostname={{user `hostname`}} ",
+            "fb=false debconf/frontend=noninteractive ",
+            "keyboard-configuration/modelcode=SKIP ",
+            "console-setup/ask_detect=false ",
+            "initrd=/install/initrd.gz -- <enter>"
+        ]
+    }],
+  "post-processors": [{
+    "output": "build/ubuntu-16.04.2-server-amd64-docker.box",
+    "type": "vagrant",
+    "keep_input_artifact": false
+  }],
+
+  "provisioners": [{
+    "type": "shell",
+    "execute_command": "echo '{{user `ssh_password`}}'| {{.Vars}} sudo -S -E bash '{{.Path}}'",
+    "scripts": [
+      "scripts/vagrant_login.sh",
+      "scripts/docker_install.sh",
+      "scripts/guest_additions.sh",
+      "scripts/clean.sh"
+    ]
+  }]
+}

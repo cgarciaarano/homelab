@@ -50,19 +50,11 @@
       "{{user `ssh_password`}}<enter>",
       "{{user `ssh_password`}}<enter>",
       "sed -i '/edge\\/community/s/^#//' /etc/apk/repositories<enter>",
-      "apk update && apk add sudo bash virtualbox-guest-additions<enter>",
+      "apk update && apk add sudo bash curl virtualbox-guest-additions<enter>",
       "<wait10><wait10>",
       "echo 'Defaults env_reset<enter>",
-      "{{user `ssh_username`}} ALL=(ALL) ALL<enter>",
+      "{{user `ssh_username`}} ALL=(ALL) NOPASSWD: ALL<enter>",
       "' > /etc/sudoers.d/{{user `ssh_username`}}<enter>",
-      "apk add docker<enter>",
-      "<wait10>",
-      "rc-update add docker boot<enter>",
-      "adduser {{user `ssh_username`}} docker<enter>",
-      "apk add py-pip<enter>",
-      "<wait10>",
-      "pip install docker-compose<enter>",
-      "<wait10><wait10>",
       "setup-keymap<enter><wait>",
       "{{user `kb_layout`}}<enter>",
       "{{user `kb_layout`}}<enter>",
@@ -94,6 +86,7 @@
     "type": "shell",
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "scripts": [
+      "docker_install.sh",
       "vagrant_login.sh"
     ]
   }]
