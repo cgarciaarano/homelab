@@ -1,0 +1,35 @@
+############################################################
+# Docker Compose for PXE
+# 
+############################################################
+version: "2"
+
+services:
+  tftp:
+    image: pghalliday/tftp
+    volumes:
+      - /media/cdrom/install/netboot/:/var/tftpboot/pxe
+      - /media/cdrom/install/filesystem.squashfs:/var/tftpboot/filesystem.squashfs:ro
+      - ./preseed.cfg:/var/tftpboot/preseed.cfg:ro
+      - ./linux-boot:/var/tftpboot/pxe/pxelinux.cfg/default:ro
+    network_mode: host
+    depends_on:
+          - "dhcp"
+
+  dhcp:
+    image: networkboot/dhcpd
+    volumes:
+      - ./dhcpd.conf:/data/dhcpd.conf
+    network_mode: host
+    command: enp0s8
+
+  http:
+    image: httpd:2.4.25-alpine
+    ports:
+      - "80:80"
+    volumes:
+      # ISO to serve
+      - /media/cdrom:/usr/local/apache2/htdocs:ro
+    network_mode: host
+    depends_on:
+          - "tftp"

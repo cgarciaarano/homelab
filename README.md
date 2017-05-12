@@ -65,3 +65,15 @@ The VM is provisioned to avoid a nasty bug in VirtualBox Sahred Folders + Docker
 dev up
 ```
 
+As we're going to use different applications, dome of them network related, it's convenient to use bridged network adapters (`public_network` in vagrant), so the VM has its own IP address that can be accessed directly.
+
+# Virtualization Server
+
+We're going to use an old laptop as a virtualization server so we can create, provision and manage remote VMs. 
+
+
+# Bare metal provisioning
+
+## PXE
+
+TFTP, DHCP and HTTP needed
