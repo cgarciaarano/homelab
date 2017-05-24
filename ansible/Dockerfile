@@ -10,4 +10,4 @@ RUN apk add g++ make libffi-dev openssl-dev && \
  	apk del g++ make libffi-dev openssl-dev && \
 	rm -rf /var/cache/apk/*
 
-CMD ["/bin/bash"]
+CMD ["/usr/local/bin/ansible"]

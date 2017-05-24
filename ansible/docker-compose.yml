@@ -7,15 +7,14 @@ version: "2"
 services:
   ansible:
     build:
-      image: cgarciaarano/homelab:ansible
       context: .
       dockerfile: Dockerfile
+    image: cgarciaarano/homelab:ansible
     volumes:
-      # Mount netboot 
       - ./hosts:/etc/ansible/hosts
 
   target:
     build:
-      image: cgarciaarano/homelab:target
       context: xenial/
       dockerfile: Dockerfile
+    image: cgarciaarano/homelab:target

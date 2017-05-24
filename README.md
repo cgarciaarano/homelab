@@ -16,7 +16,7 @@ The idea is to have an environment to experiment with infrastructure tools such 
 - Vagrant/Terraform/Packer
 - Consul/Etcd
 
-I will cover the creation of the environment using these tools, and the creation of different services. 
+I will cover the setup of the environment using these tools, and the setup of different services. 
 
 
 # Contents
@@ -26,7 +26,6 @@ I will cover the creation of the environment using these tools, and the creation
   - [Vagrant](#vagrant)
 - [Virtualization Server](#virtualization-server)
   - [PXE provisioning](#pxe-provisioning)
-     - [Kickstart](#kickstart)
   - [Wake On LAN](#wake-on-lan)
   - [Provision](#provision)
     - [Ansible](#ansible)
@@ -47,7 +46,9 @@ I've used the following versions:
 
 ## Packer
 
-Visit [`packer` section](packer/README.md)
+We'll use `packer` to create a custom box for development.
+
+Visit [`packer` section](packer/) for more details.
 
 ## Vagrant
 
@@ -71,67 +72,25 @@ We're going to use an old laptop as a virtualization server so we can create, pr
 - PXE
 
 ## PXE provisioning
-`pxe\`
 
-PXE (Preboot eXecution Environment) is the low level approach. It uses TFTP, DHCP and HTTP. DHCP provides an option to define the TFTP server that has the execution environment needed, whereas HTTP is used to serve the media needed  for the OS installation. When a new host boots up with PXE active (booting from LAN), it expects to find options 66 (TFTP server address) and 67 (boot program file). It uses this values to load the  initial environment.
+PXE (Preboot eXecution Environment) is a low level approach. It uses TFTP, DHCP and HTTP to perform a bare-metal installation.
 
-References: 
-- http://blog.scottlowe.org/2015/05/20/fully-automated-ubuntu-install/
-- https://www.hiroom2.com/2016/05/19/ubuntu-16-04-debian-8-run-pxe-boot-server-for-automated-install/
-
-Before anything, we need to mount the ISO in the host running Docker. I haven't found a way to mount the ISO in a container in a reliable way. The ISO file is not included in the repository, so you have to download it first. From `pxe/` directory:
-
-```
-wget http://releases.ubuntu.com/16.04.2/ubuntu-16.04.2-server-amd64.iso -P xenial64/
-sudo mount -t iso9660 xenial64/ubuntu-16.04.2-server-amd64.iso /media/cdrom/
-```
-
-I have hardcoded the public IP address of the host (See `Vagrantfile` and `xenial64/lixun-boot`. HINT: I moved IP related commands to kernel params). There should be a better way to do this, maybe templating or using DNS. **TODO**: Find a way to pass the bridged IP address to the script.
-
-Check if the IP is correct and has connectivity to other hosts on the net. Then we run the services:
-
-```
-dev run
-```
-
-Then, boot up the machine and boot form network interface. DHCP should kick in and provide an IP with the proper options. **NOTE**: If you're testing this with a VM, be sure to give it at least 768 MB, because it needs it to install the `filesystem.squashfs`. If not, it returns a cryptic error message, stopping the installation. In the logs you will see someting like, `Cannot write to /tmp/live-install/filesystem.squashfs`.
-
-
-### Kickstart
-
-There's another possibility to automate the installation, using Kickstart. This comes from RedHat, but I'm not using it now.
+Visit the [`pxe` section](packer/) for more details
 
 ## Wake On LAN
-`wol/`
 
-I added a feature to boot up the virtualization server. We need to configure the BIOS to allow WoL, and also configure the network card:
+I added a feature to boot up the virtualization server via LAN. 
 
-```
-sudo ethtool -s enp0s3 wol g
-```
+Visit [`wol` section](wol/) for more details
 
-To start the server, there's a Compose file that uses a Docker image with the package `awake` in `alpine`. We just need to pass the MAC address, already set in the Compose file.
+## Provision
 
-```
-dev up
-```
+We need to perform some configuration in the just created server, as the WoL feature. We have many options to do this, but we're going to use Ansible.
 
-Also, to save some space in my desktop I need to close the laptop, but this suspends it. To avoid this, we can configure `logind`. In `/etc/systemd/logind.conf` ensure:
+### Ansible
 
-```
- HandleLidSwitch=ignore
- ```
+Agentless configuration management tool.
 
- and restart the service `sudo service systemd-logind restart`.
+Visit [`ansible`section](ansible/) for more details.
 
- **TODO** Set this configuration in provisioning.
-
- ## Provision
-
- We need to perform some configuration in the just created server, as the WoL feature. We have many options to do this, but we're going to use Ansible.
-
- ### Ansible
-
- We'll use this [development environment](ansible/)
-
- ### Puppet
+### Puppet
