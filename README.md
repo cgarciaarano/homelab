@@ -16,6 +16,9 @@ The idea is to have an environment to experiment with infrastructure tools such 
 - Vagrant/Terraform/Packer
 - Consul/Etcd
 
+I will cover the creation of the environment using these tools, and the creation of different services. 
+
+
 # Contents
 
 - [Development Environment](#development-environment)
@@ -25,7 +28,9 @@ The idea is to have an environment to experiment with infrastructure tools such 
   - [PXE provisioning](#pxe-provisioning)
      - [Kickstart](#kickstart)
   - [Wake On LAN](#wake-on-lan)
-
+  - [Provision](#provision)
+    - [Ansible](#ansible)
+    - [Puppet](#puppet)
   ...
 
 # Development environment
@@ -101,7 +106,7 @@ References:
 Before anything, we need to mount the ISO in the host running Docker. I haven't found a way to mount the ISO in a container in a reliable way. The ISO file is not included in the repository, so you have to download it first. From `pxe/` directory:
 
 ```
-wget http://releases.ubuntu.com/16.04.2/ubuntu-16.04.2-server-amd64.iso -O xenial64/
+wget http://releases.ubuntu.com/16.04.2/ubuntu-16.04.2-server-amd64.iso -P xenial64/
 sudo mount -t iso9660 xenial64/ubuntu-16.04.2-server-amd64.iso /media/cdrom/
 ```
 
@@ -148,3 +153,7 @@ Also, to save some space in my desktop I need to close the laptop, but this susp
  ## Provision
 
  We need to perform some configuration in the just created server, as the WoL feature. We have many options to do this, but we're going to use Ansible.
+
+ ### Ansible
+
+ ### Puppet
