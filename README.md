@@ -110,7 +110,7 @@ wget http://releases.ubuntu.com/16.04.2/ubuntu-16.04.2-server-amd64.iso -P xenia
 sudo mount -t iso9660 xenial64/ubuntu-16.04.2-server-amd64.iso /media/cdrom/
 ```
 
-I have hardcoded the public IP address of the host (See `Vagrantfile` and `xenial64/lixun-boot`, I moved IP related commands to kernel params). There should be a better way to do this, maybe templating or using DNS. **TODO**: Find a way to pass the bridged IP address to the script.
+I have hardcoded the public IP address of the host (See `Vagrantfile` and `xenial64/lixun-boot`. HINT: I moved IP related commands to kernel params). There should be a better way to do this, maybe templating or using DNS. **TODO**: Find a way to pass the bridged IP address to the script.
 
 Check if the IP is correct and has connectivity to other hosts on the net. Then we run the services:
 

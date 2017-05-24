@@ -1,0 +1,19 @@
+############################################################
+# Docker Compose for Ansible with a target machine
+# 
+############################################################
+version: "2"
+
+services:
+  ansible:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Mount netboot 
+      - ./hosts:/etc/ansible/hosts
+
+  target:
+    build:
+      context: xenial/
+      dockerfile: Dockerfile

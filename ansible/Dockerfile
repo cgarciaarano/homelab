@@ -1,17 +1,13 @@
 ################################################################
-# Example from https://www.amon.cx/blog/one-year-with-ansible/
+# Docker image for Ansible in Alpine
 #
 ################################################################
-FROM ubuntu:trusty
+FROM python:2.7-alpine
 
-RUN apt-get update
-
-RUN apt-get install -y software-properties-common
-RUN apt-add-repository ppa:ansible/ansible
-RUN apt-get update
-RUN apt-get install -y git curl ansible
-
-ADD mysql.yml /playbooks/mysql.yml
-RUN ansible-playbook /playbooks/mysql.yml -i 'localhost' --conection=local
+RUN apk update && apk add bash
+RUN apk add g++ make libffi-dev openssl-dev && \
+ 	pip install ansible && \
+ 	apk del g++ make libffi-dev openssl-dev && \
+	rm -rf /var/cache/apk/*
 
 CMD ["/bin/bash"]
