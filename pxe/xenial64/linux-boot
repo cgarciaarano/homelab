@@ -1,0 +1,13 @@
+# D-I config version 2.0
+# search path for the c32 support libraries (libcom32, libutil etc.)
+path ubuntu-installer/amd64/boot-screens/
+include ubuntu-installer/amd64/boot-screens/menu.cfg
+default ubuntu-installer/amd64/boot-screens/vesamenu.c32
+prompt 0
+timeout 5
+# Load automatically autoinstall
+default autoinstall
+
+LABEL autoinstall
+    KERNEL ubuntu-installer/amd64/linux
+    APPEND initrd=ubuntu-installer/amd64/initrd.gz auto=true priority=critical url=http://192.168.200.134/preseed.cfg interactive=false live-installer/net-image=http://192.168.200.134/iso/install/filesystem.squashfs mirror/http/hostname=192.168.200.134 mirror/http/proxy=192.168.200.134/iso preseed/late_command="wget http://192.168.200.134/conf/apt/sources.list -O /target/etc/apt/sources.list; echo >/target/etc/apt/apt.conf" DEBCONF_DEBUG=developer

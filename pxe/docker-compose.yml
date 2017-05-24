@@ -1,5 +1,5 @@
 ############################################################
-# Docker Compose for PXE
+# Docker Compose for PXE and xenial64
 # 
 ############################################################
 version: "2"
@@ -11,7 +11,7 @@ services:
       # Mount netboot 
       - /media/cdrom/install/netboot/:/var/tftpboot/pxe
       # Mount kernel boot parameters
-      - ./linux-boot:/var/tftpboot/pxe/pxelinux.cfg/default:ro
+      - ./xenial64/linux-boot:/var/tftpboot/pxe/pxelinux.cfg/default:ro
     network_mode: host
     depends_on:
           - "dhcp"
@@ -31,9 +31,9 @@ services:
       # Serving ISO in iso/ to allow mounting more directories
       - /media/cdrom:/usr/local/apache2/htdocs/iso:ro
       # Mounting preseed file
-      - ./preseed.cfg:/usr/local/apache2/htdocs/preseed.cfg:ro
+      - ./xenial64/preseed.cfg:/usr/local/apache2/htdocs/preseed.cfg:ro
       # Mounting default sources.list
-      - ./sources.list:/usr/local/apache2/htdocs/conf/apt/sources.list:ro
+      - ./xenial64/sources.list:/usr/local/apache2/htdocs/conf/apt/sources.list:ro
 
     network_mode: host
     depends_on:
