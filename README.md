@@ -78,7 +78,7 @@ We're going to use an old laptop as a virtualization server so we can create, pr
 - Puppet Razor
 - PXE
 
-# PXE provisioning
+## PXE provisioning
 `pxe\`
 
 PXE (Preboot eXecution Environment) is the low level approach. It uses TFTP, DHCP and HTTP. DHCP provides an option to define the TFTP server that has the execution environment needed, whereas HTTP is used to serve the media needed  for the OS installation. When a new host boots up with PXE active (booting from LAN), it expects to find options 66 (TFTP server address) and 67 (boot program file). It uses this values to load the  initial environment.
@@ -105,4 +105,21 @@ dev run
 Then, boot up the machine and boot form network interface. DHCP should kick in and provide an IP with the proper options. **NOTE**: If you're testing this with a VM, be sure to give it at least 768 MB, because it needs it to install the `filesystem.squashfs`. If not, it returns a cryptic error message, stopping the installation. In the logs you will see someting like, `Cannot write to /tmp/live-install/filesystem.squashfs`.
 
 
-Kickstart
+### Kickstart
+
+There's another possibility to automate the installation, using Kickstart. This comes from RedHat, but I'm not using it now.
+
+## Wake On LAN
+`wol/`
+
+I wil add a feature to boot up the virtualization server. We need to configure the BIOS to allow WoL, and also configure the network card:
+
+```
+sudo ethtool -s enps0 enp0s3 wol g
+```
+
+To start the server, there's a Compose file that uses a Docker image with the package `awake` in `alpine`. We just need to pass the MAC address, already set in the Compose file.
+
+```
+dev up
+```

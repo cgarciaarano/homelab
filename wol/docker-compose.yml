@@ -1,0 +1,12 @@
+############################################################
+# Docker Compose for WoL - Wake On Lan
+# 
+############################################################
+version: "2"
+
+services:
+  wol:
+    image: jazzdd/wol
+    environment:
+     - mac=11:11:11:11:11:11
+    network_mode: host
