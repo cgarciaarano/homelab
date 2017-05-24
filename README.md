@@ -132,6 +132,6 @@ Also, to save some space in my desktop I need to close the laptop, but this susp
 
  ### Ansible
 
- We'll use this [development environment](ansible/README.md)
+ We'll use this [development environment](ansible/)
 
  ### Puppet
