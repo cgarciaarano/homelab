@@ -8,9 +8,9 @@ services:
   tftp:
     image: pghalliday/tftp
     volumes:
+      # Mount netboot 
       - /media/cdrom/install/netboot/:/var/tftpboot/pxe
-      - /media/cdrom/install/filesystem.squashfs:/var/tftpboot/filesystem.squashfs:ro
-      - ./preseed.cfg:/var/tftpboot/preseed.cfg:ro
+      # Mount kernel boot parameters
       - ./linux-boot:/var/tftpboot/pxe/pxelinux.cfg/default:ro
     network_mode: host
     depends_on:
@@ -28,8 +28,13 @@ services:
     ports:
       - "80:80"
     volumes:
-      # ISO to serve
-      - /media/cdrom:/usr/local/apache2/htdocs:ro
+      # Serving ISO in iso/ to allow mounting more directories
+      - /media/cdrom:/usr/local/apache2/htdocs/iso:ro
+      # Mounting preseed file
+      - ./preseed.cfg:/usr/local/apache2/htdocs/preseed.cfg:ro
+      # Mounting default sources.list
+      - ./sources.list:/usr/local/apache2/htdocs/conf/apt/sources.list:ro
+
     network_mode: host
     depends_on:
           - "tftp"

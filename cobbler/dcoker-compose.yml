@@ -1,0 +1,17 @@
+############################################################
+# Docker Compose for cobbler
+# 
+############################################################
+version: "2"
+
+services:
+  cobbler:
+    image: ravihuang/cobbler:latest
+    env_file: .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/opt/app
+    working_dir: /opt/app
+    command: python manage.py runserver 0.0.0.0:8080
+    network_mode: bridge
