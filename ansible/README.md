@@ -1,7 +1,8 @@
 # Ansible
 
+Agentless configuration management tool.
 
-##Development environent
+## Development environent
 
 This directory contains a development environment for Ansible using Docker Compose.
 

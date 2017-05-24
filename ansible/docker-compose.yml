@@ -12,9 +12,11 @@ services:
     image: cgarciaarano/homelab:ansible
     volumes:
       - ./hosts:/etc/ansible/hosts
+      - ./ansible.cfg:/etc/ansible/ansible.cfg
+      - ./ssh_keys/id_rsa:/root/.ssh/id_rsa
 
   target:
     build:
-      context: xenial/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: xenial/Dockerfile
     image: cgarciaarano/homelab:target
