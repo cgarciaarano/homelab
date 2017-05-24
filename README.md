@@ -123,3 +123,13 @@ To start the server, there's a Compose file that uses a Docker image with the pa
 ```
 dev up
 ```
+
+Also, to save some space in my desktop I need to close the laptop, but this suspends it. To avoid this, we can configure `logind`. In `/etc/systemd/logind.conf` ensure:
+
+```
+ HandleLidSwitch=ignore
+ ```
+
+ and restart the service `sudo service systemd-logind restart`.
+
+ **TODO** Set this configuration in provisioning.
