@@ -16,6 +16,18 @@ The idea is to have an environment to experiment with infrastructure tools such 
 - Vagrant/Terraform/Packer
 - Consul/Etcd
 
+# Contents
+
+- [Development Environment](#development-environment)
+  - [Packer](#packer)
+  - [Vagrant](#vagrant)
+- [Virtualization Server](#virtualization-server)
+  - [PXE provisioning](#pxe-provisioning)
+     - [Kickstart](#kickstart)
+  - [Wake On LAN](#wake-on-lan)
+
+  ...
+
 # Development environment
 
 This environment is on the Windows 10 laptop, using VirtualBox and Vagrant. A custom Vagrant box based on Ubuntu
@@ -28,11 +40,10 @@ I've used the following versions:
 - Vagrant 1.9.2
 - Packer 1.0.0
 
-## Vagrant box creation
+## Packer
 `packer/`
 
-The creation of the box is inspired on this post, [Building a Vagrant Box from Start to Finish](https://blog.engineyard.com/2014/building-a-vagrant-box), but since it's a 
-manual procedure, I'm using Packer so the box is defined as code, which the purpose of this project.
+First step is to build the development box. The creation of the box is inspired on this post, [Building a Vagrant Box from Start to Finish](https://blog.engineyard.com/2014/building-a-vagrant-box), but since it's a manual procedure, I'm using Packer so the box is defined as code, which the purpose of this project.
 
 Alpine is the distribution I selected in first place because it's minimal. Since we're going to use Docker to run any binary, the dependencies will be handled by containers instead of the OS. The Alpine installation is straightforward, just run `setup-alpine`, answer the questions and it's ready to go. To build it with Packer, it's needed to populate the `boot-command` with the answers to this script. There are some variables to change some settings in the virtual machine, as the keyboard layout, memory and number of cores. 
 
@@ -57,7 +68,7 @@ To pass parameters to the build, as user login and alike:
 packer build -var=ssh_username=youruser -var=ssh_password=yourpassword ubuntu64.json
 ```
 
-## Vagrantfile
+## Vagrant
 
 Once the vagrant box it's created, we can use it to run the development environment. The box has Docker and Docker Compose under Ubuntu, so the development will be done under containers without polluting the VM guest with dependencies. The intended usage is to use Compose to define and run the environment.
 
@@ -67,7 +78,7 @@ The VM is provisioned to avoid a nasty bug in VirtualBox Sahred Folders + Docker
 dev up
 ```
 
-As we're going to use different applications, dome of them network related, it's convenient to use bridged network adapters (`public_network` in vagrant), so the VM has its own IP address that can be accessed directly.
+As we're going to use different applications, some of them network related, it's convenient to use bridged network adapters (`public_network` in vagrant), so the VM has its own IP address that can be accessed directly.
 
 # Virtualization Server
 
@@ -112,10 +123,10 @@ There's another possibility to automate the installation, using Kickstart. This 
 ## Wake On LAN
 `wol/`
 
-I wil add a feature to boot up the virtualization server. We need to configure the BIOS to allow WoL, and also configure the network card:
+I added a feature to boot up the virtualization server. We need to configure the BIOS to allow WoL, and also configure the network card:
 
 ```
-sudo ethtool -s enps0 enp0s3 wol g
+sudo ethtool -s enp0s3 wol g
 ```
 
 To start the server, there's a Compose file that uses a Docker image with the package `awake` in `alpine`. We just need to pass the MAC address, already set in the Compose file.
@@ -133,3 +144,7 @@ Also, to save some space in my desktop I need to close the laptop, but this susp
  and restart the service `sudo service systemd-logind restart`.
 
  **TODO** Set this configuration in provisioning.
+
+ ## Provision
+
+ We need to perform some configuration in the just created server, as the WoL feature. We have many options to do this, but we're going to use Ansible.
