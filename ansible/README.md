@@ -23,7 +23,7 @@ to start the target machine and the network, then run an ansible command against
 dev run ansible target -m ping
 ```
 
-There's a key pair to avoid password prompts. The public key is copied to `target` when the image is created, but the ansible private key is mounted on the container. If want to change it, just generate another key pair and substitute the current pair. **WARNING**: It uses `root` to connect, so it should't be used in production.
+There's a key pair without passphrase to avoid password prompts. The public key is copied to `target` when the image is created, but the ansible private key is mounted on the container. If want to change it, just generate another key pair and substitute the current pair. **WARNING**: It uses `root` to connect, so it should't be used in production.
 
 To discard all changes done on `target`, just destroy the environment and start it again (`restart` only stops and restarts the containers, so the volumes are preserved):
 

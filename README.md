@@ -30,7 +30,8 @@ I will cover the setup of the environment using these tools, and the setup of di
     - [Ansible](#ansible)
     - [Puppet](#puppet)
   - [Wake On LAN](#wake-on-lan)
-  ...
+ 
+...
 
 # Development environment
 
@@ -66,18 +67,18 @@ As we're going to use different applications, some of them network related, it's
 
 ## Bare metal provision
 	
-	We're going to use an old laptop as a virtualization server so we can create, provision and manage remote VMs. The first step it's to provision the server with the OS properly configured. There are many options to do a bare-metal provision:
+We're going to use an old laptop as a virtualization server so we can create, provision and manage remote VMs. The first step it's to provision the server with the OS properly configured. There are many options to do a bare-metal provision:
 
-	- PXE
-	- Cobbler
-	- Foreman
-	- Puppet Razor
+- PXE
+- Cobbler
+- Foreman
+- Puppet Razor
 
-	### PXE provisioning
+### PXE provisioning
 
-	PXE (Preboot eXecution Environment) is a low level approach. It uses TFTP, DHCP and HTTP to perform a bare-metal installation.
+PXE (Preboot eXecution Environment) is a low level approach. It uses TFTP, DHCP and HTTP to perform a bare-metal installation.
 
-	Visit the [`pxe` section](pxe/) for more details
+Visit the [`pxe` section](pxe/) for more details
 
 ## Configuration management
 
