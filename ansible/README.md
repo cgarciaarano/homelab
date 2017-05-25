@@ -4,7 +4,7 @@ Agentless configuration management tool.
 
 ## Development environent
 
-This directory contains a development environment for Ansible using Docker Compose.
+This directory contains a development environment for Ansible Playbooks using Docker Compose. (Not intended for Ansible developing)
 
 It defines one container with Ansible and another one with the target machine. 
 
@@ -24,3 +24,10 @@ dev run ansible target -m ping
 ```
 
 There's a key pair to avoid password prompts. The public key is copied to `target` when the image is created, but the ansible private key is mounted on the container. If want to change it, just generate another key pair and substitute the current pair. **WARNING**: It uses `root` to connect, so it should't be used in production.
+
+To discard all changes done on `target`, just destroy the environment and start it again (`restart` only stops and restarts the containers, so the volumes are preserved):
+
+```
+dev down
+dev up -d
+```

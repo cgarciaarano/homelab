@@ -11,8 +11,7 @@ services:
       dockerfile: Dockerfile
     image: cgarciaarano/homelab:ansible
     volumes:
-      - ./hosts:/etc/ansible/hosts
-      - ./ansible.cfg:/etc/ansible/ansible.cfg
+      - ./etc:/etc/ansible/
       - ./ssh_keys/id_rsa:/root/.ssh/id_rsa
 
   target:
