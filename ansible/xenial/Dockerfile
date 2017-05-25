@@ -4,7 +4,7 @@
 ################################################################
 FROM ubuntu:16.04
 
-RUN apt-get update && apt-get install -y openssh-server python
+RUN apt-get update && apt-get install -y openssh-server python-minimal
 RUN mkdir /var/run/sshd
 
 RUN echo 'root:root' |chpasswd
