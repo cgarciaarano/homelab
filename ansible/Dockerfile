@@ -18,5 +18,7 @@ RUN apk add git && \
 
 COPY entrypoint.sh /usr/local/bin/
 
+WORKDIR /opt/ansible
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/local/bin/ansible", "--version"]

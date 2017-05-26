@@ -2,12 +2,12 @@
 
 case $1 in
 	playbook)
-		ansible-playbook "${@:2}"
+		exec ansible-playbook "${@:2}"
 		;;
 	bash|shell)
-		/bin/bash
+		exec /bin/bash
 		;;
 	*)
-		ansible "$@"
+		exec ansible "$@"
 		;;
 esac

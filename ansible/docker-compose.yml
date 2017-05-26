@@ -13,6 +13,7 @@ services:
     volumes:
       - ./etc:/etc/ansible/
       - ./ssh_keys/id_rsa:/root/.ssh/id_rsa
+      - .:/opt/ansible
 
   target:
     build:
