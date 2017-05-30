@@ -26,21 +26,8 @@
      notify:
       - Start PSQL
 
-   - name: Setup PSQL
-     apt: 
-        pkg: postgresql-{{ version }}
-        state: installed
-        update_cache: true
-     when: aptauth|success
-     register: psqlinstalled
-     notify:
-      - Start PSQL
-
   handlers:
    - name: Start PSQL
      service: 
         name: postgresql
         state: started
-
-  #  - name: Reload Nginx
-  #    service: name=nginx state=reloaded

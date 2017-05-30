@@ -1,0 +1,26 @@
+- name: Add PSQL Repository
+  apt_repository: 
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main' 
+    state: present
+
+- name: Authenticate repo
+  apt_key:
+    url: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+    state: present
+  register: aptauth
+
+- name: Install PSQL
+  apt: 
+    pkg: postgresql-{{ version }}
+    state: installed 
+    update_cache: true
+  when: aptauth|success
+  register: psqlinstalled
+  notify:
+    - Start PSQL
+
+- name: Setup PSQL
+  template: 
+
+  notify:
+    - Reload PSQL

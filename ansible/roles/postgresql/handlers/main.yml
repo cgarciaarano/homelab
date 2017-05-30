@@ -1,0 +1,9 @@
+- name: Start PSQL
+  service: 
+    name: postgresql
+    state: started
+
+- name: Reload PSQL
+  service: 
+    name: postgresql
+    state: reloaded

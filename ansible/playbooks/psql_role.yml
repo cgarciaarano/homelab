@@ -1,0 +1,9 @@
+- hosts: target
+  tasks:
+    - name: Create group for ubuntus
+      group_by: 
+        key: "{{ ansible_os_family }}"
+
+- hosts: Debian
+  roles:
+   - postgresql

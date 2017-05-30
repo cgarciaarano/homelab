@@ -49,17 +49,28 @@ The process to install PostgreSQL can be summarized as:
 5. Setup users
 6. Restart
 
-These are going to be the tasks in the YML file.
+These are going to be the tasks in the YML file. I've started with a simple playbook, but it's better organized as a role, so I have developed just the role.
 
 #### Variables
  
-- version: We can pass the version setting the variables in the command line: `ansible-playbook playbooks/psql.yml -e "version=9.4"`
-- datapath: It's created based on `version`
-- configpath: It's created based on `version`
+- version: We can pass the version setting the variables in the command line: `ansible-playbook playbooks/psql.yml -e "version=9.4"`. Defaults to 9.6.
+- datapath: It's created based on `version`.
+- configpath: It's created based on `version`.
 
 #### Tasks
 
-Some are self-explanatory
+They are pretty self explanatory
 
-- Add repo
-- Authenticate repo
+- Add repo, takes in account the distro.
+- Authenticate repo.
+- Install packages, will use the appropiate version of `postgresql`.
+- Setup, uses some templating. It can be hard to be consisntent between versions.
+- Add admin user.
+
+#### Templates
+
+#### Meta
+
+#### Playbook
+
+First, we create a group in runtime to select only the Debian family, then apply the role to that group.
