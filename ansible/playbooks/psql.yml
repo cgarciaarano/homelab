@@ -17,14 +17,20 @@
      register: aptauth
 
    - name: Install PSQL
-     apt: pkg=postgresql-{{ version }} state=installed update_cache=true
+     apt: 
+        pkg: postgresql-{{ version }} 
+        state: installed 
+        update_cache: true
      when: aptauth|success
      register: psqlinstalled
      notify:
       - Start PSQL
 
    - name: Setup PSQL
-     apt: pkg=postgresql-{{ version }} state=installed update_cache=true
+     apt: 
+        pkg: postgresql-{{ version }}
+        state: installed
+        update_cache: true
      when: aptauth|success
      register: psqlinstalled
      notify:
@@ -32,7 +38,9 @@
 
   handlers:
    - name: Start PSQL
-     service: name=postgresql state=started
+     service: 
+        name: postgresql
+        state: started
 
   #  - name: Reload Nginx
   #    service: name=nginx state=reloaded

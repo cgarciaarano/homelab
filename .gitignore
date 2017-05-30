@@ -1,6 +1,12 @@
 # ISO files
 *.iso
 
+# Ansible retry files
+*.retry
+
+# No SSH keys from Ansible
+ssh_keys
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

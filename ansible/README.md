@@ -49,7 +49,7 @@ The process to install PostgreSQL can be summarized as:
 5. Setup users
 6. Restart
 
-This are going to be the tasks in the YML file.
+These are going to be the tasks in the YML file.
 
 #### Variables
  

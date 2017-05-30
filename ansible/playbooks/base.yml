@@ -1,0 +1,30 @@
+- hosts: all
+
+  vars:
+   - username: cgarcia
+
+  tasks:
+   - name: Add user
+     user:
+        user: "{{ username }}"
+        append: yes
+        groups: root,sudo
+        password: "$6$3Z07mgIsN$eptrcgJ3uo2QXq7gJsh.l4a.vA9Qk3rLm.Bu7d1x9biPfyzFLwY8uZVbYUlDZrJX.V/.EA3y2OYnBr4QbHDS30"
+
+   - name: Add authorized key
+     authorized_key: 
+       user: "{{ username }}"
+       state: present
+       key: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAuO0bJHClATiosi1OBnTNnFWK5sla66DpJA6ZGJbfXbj+h6UqRapkmsjgO+eAflCu6LIJOXn2mzinEug3s5M3WG5H1EOJ9drvYSJ7J5gpNWmjygHMlmlh8OEZC5v6aD9xwrE6LxVd7cOVrlw4bhHLWYMQ37a63cambIhxfai846dfOhDm9n0GuQ4dV8MXwbcPXKxpWk8drKJ4YHk/NMZE2nfHBLy6C5HXt2PUFYR3RzcTaGep8k2SyJrpyEaaua+h/3GFyBNyqUJhVOQOt+swKnr+7xMQypFWV+wOhIuLJLkGyY3sRiSxcJbjHm3iSDyVv1F78NqAlfnbZ2SM2KSB3w== charli"
+
+   - name: Check for Docker
+     command: grep docker /etc/group
+     register: docker
+     ignore_errors: True
+
+   - name: Add to docker group
+     user:
+       user: "{{ username }}"
+       append: yes
+       groups: docker
+     when: docker|succeeded
