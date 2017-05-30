@@ -34,3 +34,32 @@ dev down
 dev up -d
 ```
 
+## Playbooks
+
+There are some examples in the playbooks directory. As an execise, I'm going to write a playbook to install PostgreSQL 9.x.
+
+### PostgreSQL
+
+The process to install PostgreSQL can be summarized as:
+
+1. Add repository
+2. Authenticate repository
+3. Install packages
+4. Setup configuration files
+5. Setup users
+6. Restart
+
+This are going to be the tasks in the YML file.
+
+#### Variables
+ 
+- version: We can pass the version setting the variables in the command line: `ansible-playbook playbooks/psql.yml -e "version=9.4"`
+- datapath: It's created based on `version`
+- configpath: It's created based on `version`
+
+#### Tasks
+
+Some are self-explanatory
+
+- Add repo
+- Authenticate repo

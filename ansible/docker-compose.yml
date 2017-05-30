@@ -10,6 +10,11 @@ services:
       context: .
       dockerfile: Dockerfile
     image: cgarciaarano/homelab:ansible
+    environment:
+      - ANSIBLE_DEBUG=False
+      - ANSIBLE_VERBOSITY=2
+      - ANSIBLE_ROLES_PATH=/opt/ansible/roles
+      - ANSIBLE_HOST_KEY_CHECKING=False
     volumes:
       - ./etc:/etc/ansible/
       - ./ssh_keys/id_rsa:/root/.ssh/id_rsa
