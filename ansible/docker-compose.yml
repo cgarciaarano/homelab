@@ -17,7 +17,7 @@ services:
       - ANSIBLE_HOST_KEY_CHECKING=False
     volumes:
       - ./etc:/etc/ansible/
-      - ./ssh_keys/id_rsa:/root/.ssh/id_rsa
+      - ./ssh_keys/:/root/.ssh/
       - .:/opt/ansible
 
   target:
@@ -25,3 +25,4 @@ services:
       context: .
       dockerfile: xenial/Dockerfile
     image: cgarciaarano/homelab:target
+

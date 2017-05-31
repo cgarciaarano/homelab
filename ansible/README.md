@@ -8,7 +8,7 @@ This directory contains a development environment for Ansible Playbooks using Do
 
 It defines one container with Ansible and another one with the target machine. 
 
-- `ansible`: Alpine with Python 2.7. Ansible is installed via `git`, the configuration in `etc/' is mounted on `/etc/ansible/`, and the `ansible/`directory is mounted on `/opt/ansible`. It also contains a private key to connect to the target machines
+- `ansible`: Alpine with Python 2.7. Ansible is installed via `git`, the configuration in `etc/` is mounted on `/etc/ansible/`, and the `ansible/` directory is mounted on `/opt/ansible`. It also contains a private key to connect to the target machines
 - `target`: Ubuntu Xenial with ssh server to test Ansible playbooks. Python is installed, as it's needed by Ansible to run (this would be a problem in embedded systems). It contains a public key to allow passwordless logins from Ansible container.
 
 Just run:
@@ -64,12 +64,20 @@ They are pretty self explanatory
 - Add repo, takes in account the distro.
 - Authenticate repo.
 - Install packages, will use the appropiate version of `postgresql`.
-- Setup, uses some templating. It can be hard to be consisntent between versions.
+- Setup, uses some templating. It can be hard to be consistent between versions.
 - Add admin user.
 
 #### Templates
 
+There are templates for:
+
+- postgresql.conf
+- pg_hba.conf
+
+
 #### Meta
+
+There are no dependecies with other roles
 
 #### Playbook
 

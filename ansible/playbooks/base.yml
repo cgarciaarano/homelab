@@ -1,3 +1,4 @@
+# Creates an admin user passed as variable
 - hosts: all
 
   vars:

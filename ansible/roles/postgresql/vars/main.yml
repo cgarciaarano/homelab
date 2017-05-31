@@ -1,3 +1,5 @@
 version: 9.6
 datapath: /var/lib/postgresql/{{ version }}/main/
 configpath: /etc/postgresql/{{ version }}/main/
+admin_user: admin
+admin_password: "whatever"  # Use vault!

@@ -5,22 +5,40 @@
 
 - name: Authenticate repo
   apt_key:
-    url: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
     state: present
   register: aptauth
 
 - name: Install PSQL
   apt: 
-    pkg: postgresql-{{ version }}
+    pkg: "postgresql-{{ version }}"
     state: installed 
     update_cache: true
   when: aptauth|success
   register: psqlinstalled
+
+- name: Setup postgresql.conf
+  template: 
+    src: postgresql.conf.j2 
+    dest: "{{ configpath }}/postgresql.conf"
+    owner: postgres
+    group: postgres
+    mode: 0644
+
+- name: Setup pg_hba.conf
+  template: 
+    src: pg_hba.conf.j2 
+    dest: "{{ configpath }}/pg_hba.conf"
+    owner: postgres
+    group: postgres
+    mode: 0640
+
   notify:
     - Start PSQL
 
-- name: Setup PSQL
-  template: 
-
-  notify:
-    - Reload PSQL
+- name: Setup admin user
+  postgresql_user: 
+    name: "{{ admin_user}}"
+    password: "{{ admin_password}}"
+    role_attr_flags: SUPERUSER
+    expires: infinity
