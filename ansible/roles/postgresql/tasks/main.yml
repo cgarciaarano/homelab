@@ -11,11 +11,12 @@
 
 - name: Install PSQL
   apt: 
-    pkg: "postgresql-{{ version }}"
-    state: installed 
+    pkg: "{{ item }}"
+    state: present
     update_cache: true
-  when: aptauth|success
-  register: psqlinstalled
+  with_items: ["postgresql-{{ version }}"]
+  notify:
+    - Start PSQL
 
 - name: Setup postgresql.conf
   template: 
@@ -24,6 +25,8 @@
     owner: postgres
     group: postgres
     mode: 0644
+  notify:
+    - Restart PSQL
 
 - name: Setup pg_hba.conf
   template: 
@@ -32,13 +35,32 @@
     owner: postgres
     group: postgres
     mode: 0640
-
   notify:
-    - Start PSQL
+    - Reload PSQL
+
+- name: Install psycopg2
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: ["python-psycopg2"]
+
+- name: PostgreSQL | Ensure PostgreSQL is running
+  service:
+    name: postgresql
+    state: started
 
 - name: Setup admin user
   postgresql_user: 
-    name: "{{ admin_user}}"
-    password: "{{ admin_password}}"
+    name: "{{ admin_user }}"
+    password: "{{ admin_password }}"
     role_attr_flags: SUPERUSER
     expires: infinity
+  become: yes
+  become_user: postgres
+
+- name: Uninstall psycopg2
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+  with_items: ["python-psycopg2"]

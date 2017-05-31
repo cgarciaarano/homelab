@@ -64,8 +64,8 @@ They are pretty self explanatory
 - Add repo, takes in account the distro.
 - Authenticate repo.
 - Install packages, will use the appropiate version of `postgresql`.
-- Setup, uses some templating. It can be hard to be consistent between versions.
-- Add admin user.
+- Setup, uses some templating. It can be hard to be consistent between versions. [Here](https://github.com/ANXS/postgresql) they solved it using different templates for each version.
+- Add admin user. This is tricky. Usage of `postgresql_user` module requires `psycopg2` to be installed on the target host, which is far from ideal. Other option is to create the user using a crafted query via `psql` binary, which is also crappy.
 
 #### Templates
 
