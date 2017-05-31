@@ -65,7 +65,7 @@ They are pretty self explanatory
 - Authenticate repo.
 - Install packages, will use the appropiate version of `postgresql`.
 - Setup, uses some templating. It can be hard to be consistent between versions. [Here](https://github.com/ANXS/postgresql) they solved it using different templates for each version.
-- Add admin user. This is tricky. Usage of `postgresql_user` module requires `psycopg2` to be installed on the target host, which is far from ideal. Other option is to create the user using a crafted query via `psql` binary, which is also crappy.
+- Add admin user. This is tricky. Usage of `postgresql_user` module requires `psycopg2` to be installed on the target host, which is far from ideal. Other option is to create the user using a crafted query via `psql` binary, which is also crappy, so I've taken the option of installing `python-psycopg2` system package, as it's the cleanest way.
 
 #### Templates
 
@@ -74,10 +74,9 @@ There are templates for:
 - postgresql.conf
 - pg_hba.conf
 
-
 #### Meta
 
-There are no dependecies with other roles
+There are no dependecies with other roles, nor Galaxy stuff
 
 #### Playbook
 

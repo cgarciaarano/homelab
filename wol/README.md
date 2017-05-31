@@ -20,4 +20,4 @@ HandleLidSwitch=ignore
 
 and restart the service `sudo service systemd-logind restart`.
 
-**TODO** Set this configuration in provisioning.
+> **NOTE**: There's an [ansible playbook](../ansible/playbooks/lid_down.yml) to configure this. 

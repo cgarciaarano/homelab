@@ -1,0 +1,8 @@
+
+- hosts: lab
+  tasks:
+   - name: Disable suspend when screen lid is down
+     lineinfile:
+        path: /etc/systemd/logind.conf
+        regexp: "^HandleLidSwitch"
+        line: "HandleLidSwitch=ignore"

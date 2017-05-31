@@ -58,9 +58,3 @@
     expires: infinity
   become: yes
   become_user: postgres
-
-- name: Uninstall psycopg2
-  apt:
-    pkg: "{{ item }}"
-    state: absent
-  with_items: ["python-psycopg2"]

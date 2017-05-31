@@ -3,3 +3,6 @@ localhost
 
 [staging]
 target
+
+[production]
+lab
