@@ -36,7 +36,7 @@ dev up -d
 
 ## Playbooks
 
-There are some examples in the playbooks directory. As an execise, I'm going to write a playbook to install PostgreSQL 9.x.
+There are some examples in the playbooks directory. As an exercise, I'm going to write a playbook to install PostgreSQL 9.x.
 
 ### PostgreSQL
 

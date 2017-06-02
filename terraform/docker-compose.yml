@@ -1,0 +1,13 @@
+############################################################
+# Docker Compose for Terraform
+# 
+############################################################
+version: "2"
+
+services:
+  terraform:
+    image: hashicorp/terraform
+    environment:
+      - DUMMY=True
+    volumes:
+      - .:/data
