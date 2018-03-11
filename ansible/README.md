@@ -98,3 +98,11 @@ docker-compose run ansible playbook playbooks/desktop.yml --extra-vars "host=$HO
 - docker & docker-compose should be installed
 - openssh-server should be up and running
 
+
+Pending:
+
+- docker-compose
+- terraform
+- kops
+- alias (in each role)
+- prompt
