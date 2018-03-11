@@ -89,12 +89,12 @@ To ease the provision of a working desktop computer, there's a `desktop.yml` pla
 To execute this playbook in the current computer, just run:
 
 ```
-docker-compose run ansible playbook playbooks/desktop.yml --extra-vars "host=$HOSTNAME" --user=$(whoami)--ask-become-pass --ask-pass
+docker-compose run ansible playbook playbooks/desktop.yml --extra-vars "host=$HOSTNAME" --user=$(whoami) --become --ask-become-pass --ask-pass
 ```
 
 ### Requisites
 
-- $HOSTNAME should be in the ansible inventory, with the options `ansible_user=your_user` and `ansible_become=true` 
-- docker & docker-compose shoudl be installed
-- openssh-server shoud be installed and running
+- $HOSTNAME should be in the ansible inventory (hosts in this case)
+- docker & docker-compose should be installed
+- openssh-server should be up and running
 
