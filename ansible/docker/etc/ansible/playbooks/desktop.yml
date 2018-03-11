@@ -1,0 +1,10 @@
+- hosts: "{{ host | default('target') }}"
+
+  pre_tasks:
+   - name: ensure vim
+     apt: name=vim state=latest
+   - name: ensure git
+     apt: name=git state=latest
+  roles:
+   - sublime
+   - chrome

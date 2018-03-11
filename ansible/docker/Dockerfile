@@ -5,14 +5,16 @@
 FROM python:2.7-alpine
 
 RUN apk update && apk add bash libffi
-RUN apk add g++ make libffi-dev openssl-dev && \
- 	pip install https://github.com/ansible/ansible/archive/devel.zip && \
- 	apk del g++ make libffi-dev openssl-dev git && \
+
+RUN apk add git g++ make libffi-dev openssl-dev && \
+	pip install git+https://github.com/ansible/ansible.git@devel && \
+	apk del g++ make libffi-dev openssl-dev git && \
 	rm -rf /var/cache/apk/*
 
-COPY entrypoint.sh /usr/local/bin/
+COPY entrypoint.sh /
+COPY etc /etc
 
-WORKDIR /opt/ansible
+WORKDIR /etc/ansible
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/local/bin/ansible", "--version"]

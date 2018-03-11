@@ -1,5 +1,5 @@
 ################################################################
-# Docker image for Ansible in Alpine
+# Docker image for tensting Ansible in Alpine (do not use!)
 #
 ################################################################
 FROM ubuntu:16.04

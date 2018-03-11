@@ -8,7 +8,7 @@ case $1 in
 		exec ansible-vault "${@:2}"
 		;;		
 	bash|shell)
-		exec /bin/bash
+		exec /bin/sh
 		;;
 	*)
 		exec ansible "$@"

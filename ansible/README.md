@@ -81,3 +81,20 @@ There are no dependecies with other roles, nor Galaxy stuff
 #### Playbook
 
 First, we create a group in runtime to select only the Debian family, then apply the role to that group.
+
+## Desktop provision
+
+To ease the provision of a working desktop computer, there's a `desktop.yml` playbook that will add the tools and shortcut that I usually use.
+
+To execute this playbook in the current computer, just run:
+
+```
+docker-compose run ansible playbook playbooks/desktop.yml --extra-vars "host=$HOSTNAME" --user=$(whoami)--ask-become-pass --ask-pass
+```
+
+### Requisites
+
+- $HOSTNAME should be in the ansible inventory, with the options `ansible_user=your_user` and `ansible_become=true` 
+- docker & docker-compose shoudl be installed
+- openssh-server shoud be installed and running
+

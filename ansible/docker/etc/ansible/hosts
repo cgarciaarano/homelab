@@ -1,3 +1,5 @@
+xps ansible_user=cgarcia ansible_become=true 
+
 [local]
 localhost 
 
