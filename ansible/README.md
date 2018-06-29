@@ -14,13 +14,13 @@ It defines one container with Ansible and another one with the target machine.
 Just run:
 
 ```
-dev up -d
+docker-compose up -d
 ```
 
 to start the target machine and the network, then run an ansible command against it:
 
 ```
-dev run ansible target -m ping
+docker-compose run ansible target -m ping
 ```
 
 There's a key pair without passphrase to avoid password prompts. The public key is copied to `target` when the image is created, but the ansible private key is mounted on the container. If want to change it, just generate another key pair and substitute the current pair. 
@@ -30,8 +30,8 @@ There's a key pair without passphrase to avoid password prompts. The public key 
 To discard all changes done on `target`, just destroy the environment and start it again (`restart` only stops and restarts the containers, so the volumes are preserved):
 
 ```
-dev down
-dev up -d
+docker-compose down
+docker-compose up -d
 ```
 
 ## Playbooks
@@ -94,14 +94,13 @@ docker-compose run ansible playbook playbooks/desktop.yml --extra-vars "host=$HO
 
 ### Requisites
 
-- $HOSTNAME should be in the ansible inventory (hosts in this case)
-- docker & docker-compose should be installed
+- `$HOSTNAME` should be in the ansible inventory (hosts in this case)
+- docker & docker-compose should be installed (use `sudo ./bootstrap-docker-sh`)
 - openssh-server should be up and running
 
 
 Pending:
 
-- docker-compose
 - terraform
 - kops
 - alias (in each role)

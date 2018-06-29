@@ -2,14 +2,15 @@
 # Docker image for Ansible in Alpine
 #
 ################################################################
-FROM python:2.7-alpine
+FROM python:3
 
-RUN apk update && apk add bash libffi
+RUN apt-get update && apt-get install bash
 
-RUN apk add git g++ make libffi-dev openssl-dev && \
+RUN apt-get -y install git build-essential && \
 	pip install git+https://github.com/ansible/ansible.git@devel && \
-	apk del g++ make libffi-dev openssl-dev git && \
-	rm -rf /var/cache/apk/*
+	pip install aead && \
+	apt-get -y remove build-essential git && \
+	rm -rf /var/cache/apt/*
 
 COPY entrypoint.sh /
 COPY etc /etc
