@@ -1,0 +1,17 @@
+- name: Authenticate repo
+  apt_key:
+    url: "https://dl-ssl.google.com/linux/linux_signing_key.pub"
+    state: present
+  register: aptauth
+
+- name: Add Chrome Repository
+  apt_repository: 
+    repo: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'     
+    state: present
+
+- name: Install Chrome
+  apt: 
+    name: "google-chrome-stable"
+    state: present
+    update_cache: true
+

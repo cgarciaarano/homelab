@@ -7,18 +7,16 @@ version: "2"
 services:
   ansible:
     build:
-      context: .
+      context: docker
       dockerfile: Dockerfile
     image: cgarciaarano/homelab:ansible
     environment:
       - ANSIBLE_DEBUG=False
       - ANSIBLE_VERBOSITY=2
-      - ANSIBLE_ROLES_PATH=/opt/ansible/roles
+      - ANSIBLE_ROLES_PATH=/etc/ansible/roles
       - ANSIBLE_HOST_KEY_CHECKING=False
     volumes:
-      - ./etc:/etc/ansible/
-      - ./ssh_keys/:/root/.ssh/
-      - .:/opt/ansible
+      - ~/.ssh/:/root/.ssh/
 
   target:
     build:

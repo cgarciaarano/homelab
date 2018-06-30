@@ -1,0 +1,3 @@
+domain: serversforhackers.com
+ssl_key: /etc/ssl/sfh/sfh.key
+ssl_crt: /etc/ssl/sfh/sfh.crt

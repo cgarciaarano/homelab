@@ -1,0 +1,37 @@
+- name: Create Terraform directory
+  file:
+    path: "{{terraform_dir}}"
+    state: directory
+  register: terraform_directory
+
+- name: Download terraform archive Linux 64 bits
+  get_url:
+    url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
+    dest: /tmp/terraform-{{terraform_version}}.zip
+
+- name: Install unzip to unarchive terraform
+  apt:
+    name: unzip
+    state: present
+
+- name: Unarchive Terraform archive
+  unarchive:
+    src: /tmp/terraform-{{terraform_version}}.zip
+    dest: "{{terraform_dir}}"
+    copy: no
+
+- name: Adding terraform command to user path
+  file: 
+    src: "{{terraform_dir}}/terraform"
+    dest: /usr/bin/terraform
+    state: link
+
+- name: Add alias for Terraform
+  lineinfile:
+    dest: /home/{{user}}/.bashrc
+    line: "alias tf=/usr/bin/terraform"
+    owner: {{user}}
+    regexp: '^alias tf=/usr/bin/terraform$'
+    state: present
+    insertafter: EOF
+    create: True
