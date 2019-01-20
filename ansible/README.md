@@ -94,14 +94,14 @@ docker-compose run ansible playbook playbooks/desktop.yml --extra-vars "host=$HO
 
 ### Requisites
 
-- `$HOSTNAME` should be in the ansible inventory (hosts in this case)
+- `$HOSTNAME` should be in the ansible inventory (hosts in this case). You may need to add your host name and **rebuild the image** (`docker-compose build ansible
+`)
 - docker & docker-compose should be installed (use `sudo ./bootstrap-docker-sh`)
 - openssh-server should be up and running
 
 
+
 Pending:
 
-- terraform
 - kops
-- alias (in each role)
 - prompt

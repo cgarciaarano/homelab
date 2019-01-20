@@ -6,7 +6,7 @@ FROM python:3
 
 RUN apt-get update && apt-get install bash
 
-RUN apt-get -y install git build-essential && \
+RUN apt-get -y install git build-essential sshpass && \
 	pip install git+https://github.com/ansible/ansible.git@devel && \
 	pip install aead && \
 	apt-get -y remove build-essential git && \

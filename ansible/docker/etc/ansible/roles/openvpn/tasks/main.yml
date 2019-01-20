@@ -1,0 +1,7 @@
+- name: Install OpenVPN
+  apt: 
+    name: ['openvpn', 'network-manager-openvpn', 'network-manager-openvpn-gnome']
+    state: present
+    update_cache: true
+  notify:
+    - Restart Network Manager

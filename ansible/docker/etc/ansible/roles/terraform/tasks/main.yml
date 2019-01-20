@@ -1,37 +1,29 @@
-- name: Create Terraform directory
-  file:
-    path: "{{terraform_dir}}"
-    state: directory
-  register: terraform_directory
+- name: Download tfenv
+  git:
+    repo: https://github.com/kamatama41/tfenv.git
+    dest: ~/.tfenv
+  become: False
 
-- name: Download terraform archive Linux 64 bits
-  get_url:
-    url: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
-    dest: /tmp/terraform-{{terraform_version}}.zip
-
-- name: Install unzip to unarchive terraform
-  apt:
-    name: unzip
-    state: present
-
-- name: Unarchive Terraform archive
-  unarchive:
-    src: /tmp/terraform-{{terraform_version}}.zip
-    dest: "{{terraform_dir}}"
-    copy: no
-
-- name: Adding terraform command to user path
+- name: Links to /usr/local/bin
   file: 
-    src: "{{terraform_dir}}/terraform"
-    dest: /usr/bin/terraform
+    src: /home/{{ ansible_ssh_user }}/.tfenv/bin/{{ item }}
+    dest: /usr/local/bin/{{ item }}
     state: link
+  with_items:
+    - tfenv
+    - terraform
+
+- name: Install latest terraform
+  command: tfenv install 0.11.11
+  become: False
 
 - name: Add alias for Terraform
   lineinfile:
-    dest: /home/{{user}}/.bashrc
-    line: "alias tf=/usr/bin/terraform"
-    owner: {{user}}
-    regexp: '^alias tf=/usr/bin/terraform$'
+    dest: /home/{{ ansible_ssh_user }}/.bash_aliases
+    line: "alias tf='/usr/local/bin/terraform'"
+    owner: "{{ ansible_ssh_user }}"
+    regexp: ^alias tf='/usr/local/bin/terraform'$'
     state: present
     insertafter: EOF
     create: True
+  become: False

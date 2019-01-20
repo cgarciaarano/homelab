@@ -8,3 +8,6 @@
   roles:
    - sublime
    - chrome
+   - openvpn
+   - terraform
+   - aliases
