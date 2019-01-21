@@ -1,9 +1,9 @@
 - name: Add alias for Docker
   lineinfile:
-    dest: /home/{{ ansible_ssh_user }}/.bash_aliases
+    dest: ~/.bash_aliases
     line: "alias d='/usr/bin/docker'"
     owner: "{{ ansible_ssh_user }}"
-    regexp: ^alias d='/usr/bin/docker'$'
+    regexp: ^alias d='.*/docker'$
     state: present
     insertafter: EOF
     create: True
@@ -11,39 +11,11 @@
 
 - name: Add alias for Docker Compose
   lineinfile:
-    dest: /home/{{ ansible_ssh_user }}/.bash_aliases
+    dest: ~/.bash_aliases
     line: "alias dc='/usr/local/bin/docker-compose'"
     owner: "{{ ansible_ssh_user }}"
-    regexp: ^alias dc='/usr/local/bin/docker-compose'$'
+    regexp: ^alias dc='.*/docker\-compose'$
     state: present
     insertafter: EOF
     create: True
   become: False
-
-- name: Setup git prompt
-  copy: src=git-prompt.sh dest=~/.git-prompt.sh
-  become: False
-
-- name: Setup git commit alias
-  git_config:
-    name: alias.ci
-    scope: global
-    value: commit
-
-- name: Setup git status alias
-  git_config:
-    name: alias.st
-    scope: global
-    value: status
-
-- name: Setup git checkout alias
-  git_config:
-    name: alias.co
-    scope: global
-    value: checkout
-
-- name: Setup git branch alias
-  git_config:
-    name: alias.br
-    scope: global
-    value: branch

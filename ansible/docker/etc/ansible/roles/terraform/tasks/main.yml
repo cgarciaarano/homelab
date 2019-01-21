@@ -22,7 +22,7 @@
     dest: /home/{{ ansible_ssh_user }}/.bash_aliases
     line: "alias tf='/usr/local/bin/terraform'"
     owner: "{{ ansible_ssh_user }}"
-    regexp: ^alias tf='/usr/local/bin/terraform'$'
+    regexp: ^alias tf='.*/terraform'$
     state: present
     insertafter: EOF
     create: True

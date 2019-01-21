@@ -1,0 +1,48 @@
+- name: Install git
+  apt: 
+    name: "git"
+    state: latest
+    update_cache: true
+
+- name: Copy git prompt
+  copy: src=git-prompt.sh dest=~/.git-prompt.sh
+  become: False
+
+- name: Include git prompt
+  lineinfile:
+    dest: ~/.bashrc
+    line: "source ~/.git-prompt.sh"
+    owner: "{{ ansible_ssh_user }}"
+    regexp: ^source .git-prompt.sh$'
+    state: present
+    insertafter: EOF
+    create: True
+  become: False
+
+- name: Setup git commit alias
+  git_config:
+    name: alias.ci
+    scope: global
+    value: commit
+  become: False
+
+- name: Setup git status alias
+  git_config:
+    name: alias.st
+    scope: global
+    value: status
+  become: False
+
+- name: Setup git checkout alias
+  git_config:
+    name: alias.co
+    scope: global
+    value: checkout
+  become: False
+
+- name: Setup git branch alias
+  git_config:
+    name: alias.br
+    scope: global
+    value: branch
+  become: False
